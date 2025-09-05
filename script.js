@@ -19,94 +19,112 @@ function playSound(sound) {
   }
 }
 
-// Mazzo
-const suits = ["C", "Q", "F", "P"]; // cuori, quadri, fiori, picche
-function getRandomCard() {
-  const value = Math.floor(Math.random() * 10) + 1; // 1–10
-  const suit = suits[Math.floor(Math.random() * suits.length)];
-  return { value, suit, img: `cards/card_${value}${suit}.png` };
-}
-
-// Inizio partita
-document.getElementById("startButton").addEventListener("click", () => {
-  playSound(soundClick);
-  document.getElementById("setupArea").classList.add("hidden");
-  document.getElementById("gameArea").classList.remove("hidden");
-  startGame();
-});
-
-function startGame() {
-  correctCount = 0;
-  errorCount = 0;
-  jollyCount = 0;
-  updateScore();
-
-  currentCard = getRandomCard();
-  document.getElementById("currentCardImg").src = currentCard.img;
-
-  nextChallenge();
-}
-
-// Aggiorna punteggio
-function updateScore() {
-  document.getElementById("correctCount").textContent = correctCount;
-  document.getElementById("errorCount").textContent = errorCount;
-  document.getElementById("jollyCount").textContent = jollyCount;
-}
-
-// Crea sfida
-function nextChallenge() {
-  nextCard = getRandomCard();
-  document.getElementById("drawnCardImg").src = "cards/card_back.png";
-
-  const challengeText = document.getElementById("challengeText");
-  const buttons = document.getElementById("challengeButtons");
-  buttons.innerHTML = "";
-
-  // Sfida semplice: indovinare se è Maggiore o Minore
-  challengeText.textContent = "La prossima carta sarà Maggiore o Minore?";
-  ["Maggiore", "Minore"].forEach(choice => {
-    const btn = document.createElement("button");
-    btn.textContent = choice;
-    btn.addEventListener("click", () => checkAnswer(choice));
-    buttons.appendChild(btn);
-  });
-}
-
-function checkAnswer(choice) {
-  playSound(soundClick);
-
-  // Mostra carta
-  playSound(soundFlip);
-  document.getElementById("drawnCardImg").src = nextCard.img;
-
-  const isHigher = nextCard.value > currentCard.value;
-  const correct = (choice === "Maggiore" && isHigher) || (choice === "Minore" && !isHigher);
-
-  if (correct) {
-    playSound(soundCorrect);
-    correctCount++;
-    currentCard = nextCard;
-  } else {
-    playSound(soundWrong);
-    errorCount++;
-    currentCard = nextCard;
-  }
-
-  updateScore();
-
-  setTimeout(() => {
-    nextChallenge();
-  }, 1200);
-}
-
-// Toggle audio
 window.addEventListener("DOMContentLoaded", () => {
+  const startButton = document.getElementById("startButton");
+  const challengeText = document.getElementById("challengeText");
+  const challengeButtons = document.getElementById("challengeButtons");
+  const currentCardImg = document.getElementById("currentCardImg");
   const soundToggle = document.getElementById("soundToggle");
-  if (!soundToggle) return;
 
+  // Suono on/off
   soundToggle.addEventListener("click", () => {
     audioOn = !audioOn;
     soundToggle.textContent = audioOn ? "🔊" : "🔇";
   });
+
+  startButton.addEventListener("click", () => {
+    startButton.style.display = "none";
+    document.getElementById("gameArea").style.display = "block";
+    startGame();
+  });
+
+  function startGame() {
+    drawCard();
+    newChallenge();
+  }
+
+  // Pesca una nuova carta
+  function drawCard() {
+    const value = Math.floor(Math.random() * 13) + 1;
+    const suits = ["C", "P", "F", "Q"]; // cuori, picche, fiori, quadri
+    const suit = suits[Math.floor(Math.random() * suits.length)];
+    currentCard = { value, suit };
+    currentCardImg.src = `cards/card_${value}${suit}.png`;
+  }
+
+  // Scegli una sfida a caso
+  function newChallenge() {
+    challengeButtons.innerHTML = "";
+    const challenges = ["higherLower", "redBlack", "evenOdd"];
+    const type = challenges[Math.floor(Math.random() * challenges.length)];
+
+    if (type === "higherLower") {
+      challengeText.textContent = "La prossima carta sarà Maggiore o Minore?";
+      makeButton("Maggiore", () => checkHigherLower(true));
+      makeButton("Minore", () => checkHigherLower(false));
+    } 
+    else if (type === "redBlack") {
+      challengeText.textContent = "La prossima carta sarà Rossa o Nera?";
+      makeButton("Rossa", () => checkRedBlack("red"));
+      makeButton("Nera", () => checkRedBlack("black"));
+    }
+    else if (type === "evenOdd") {
+      challengeText.textContent = "Il valore sarà Pari o Dispari?";
+      makeButton("Pari", () => checkEvenOdd(true));
+      makeButton("Dispari", () => checkEvenOdd(false));
+    }
+  }
+
+  // Genera un bottone
+  function makeButton(text, action) {
+    const btn = document.createElement("button");
+    btn.textContent = text;
+    btn.addEventListener("click", () => {
+      playSound(soundClick);
+      action();
+    });
+    challengeButtons.appendChild(btn);
+  }
+
+  // Controlli delle sfide
+  function checkHigherLower(isHigher) {
+    const oldValue = currentCard.value;
+    drawCard();
+    if ((isHigher && currentCard.value > oldValue) ||
+        (!isHigher && currentCard.value < oldValue)) {
+      playSound(soundCorrect);
+      alert("✅ Corretto!");
+    } else {
+      playSound(soundWrong);
+      alert("❌ Sbagliato!");
+    }
+    newChallenge();
+  }
+
+  function checkRedBlack(choice) {
+    drawCard();
+    const reds = ["C", "Q"]; // cuori, quadri
+    const isRed = reds.includes(currentCard.suit);
+    if ((choice === "red" && isRed) || (choice === "black" && !isRed)) {
+      playSound(soundCorrect);
+      alert("✅ Corretto!");
+    } else {
+      playSound(soundWrong);
+      alert("❌ Sbagliato!");
+    }
+    newChallenge();
+  }
+
+  function checkEvenOdd(isEven) {
+    drawCard();
+    if ((isEven && currentCard.value % 2 === 0) ||
+        (!isEven && currentCard.value % 2 !== 0)) {
+      playSound(soundCorrect);
+      alert("✅ Corretto!");
+    } else {
+      playSound(soundWrong);
+      alert("❌ Sbagliato!");
+    }
+    newChallenge();
+  }
 });
