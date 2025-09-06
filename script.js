@@ -1,15 +1,10 @@
-// Variabili di stato
 let currentCard = null;
-let nextCard = null;
 let correctCount = 0;
 let errorCount = 0;
-let jollyCount = 0;
 let audioOn = true;
-
-// Suoni
-const soundClick = new Audio('click.mp3');
-const soundCorrect = new Audio('correct.mp3');
-const soundWrong = new Audio('wrong.mp3');
+const soundClick = new Audio("click.mp3");
+const soundCorrect = new Audio("correct.mp3");
+const soundWrong = new Audio("wrong.mp3");
 const soundFlip = new Audio("flip.mp3");
 
 function playSound(sound) {
@@ -25,13 +20,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const challengeButtons = document.getElementById("challengeButtons");
   const currentCardImg = document.getElementById("currentCardImg");
   const soundToggle = document.getElementById("soundToggle");
-
-  // Suono on/off
   soundToggle.addEventListener("click", () => {
     audioOn = !audioOn;
     soundToggle.textContent = audioOn ? "🔊" : "🔇";
   });
-
   startButton.addEventListener("click", () => {
     startButton.style.display = "none";
     document.getElementById("gameArea").style.display = "block";
@@ -43,7 +35,7 @@ window.addEventListener("DOMContentLoaded", () => {
     newChallenge();
   }
 
-  // Pesca una nuova carta
+  // Pesca una carta
   function drawCard() {
     const value = Math.floor(Math.random() * 13) + 1;
     const suits = ["C", "P", "F", "Q"]; // cuori, picche, fiori, quadri
@@ -52,7 +44,7 @@ window.addEventListener("DOMContentLoaded", () => {
     currentCardImg.src = `cards/card_${value}${suit}.png`;
   }
 
-  // Scegli una sfida a caso
+  // Nuova sfida casuale
   function newChallenge() {
     challengeButtons.innerHTML = "";
     const challenges = ["higherLower", "redBlack", "evenOdd"];
@@ -62,31 +54,26 @@ window.addEventListener("DOMContentLoaded", () => {
       challengeText.textContent = "La prossima carta sarà Maggiore o Minore?";
       makeButton("Maggiore", () => checkHigherLower(true));
       makeButton("Minore", () => checkHigherLower(false));
-    } 
-    else if (type === "redBlack") {
+    } else if (type === "redBlack") {
       challengeText.textContent = "La prossima carta sarà Rossa o Nera?";
       makeButton("Rossa", () => checkRedBlack("red"));
       makeButton("Nera", () => checkRedBlack("black"));
-    }
-    else if (type === "evenOdd") {
+    } else if (type === "evenOdd") {
       challengeText.textContent = "Il valore sarà Pari o Dispari?";
       makeButton("Pari", () => checkEvenOdd(true));
       makeButton("Dispari", () => checkEvenOdd(false));
     }
   }
-
-  // Genera un bottone
   function makeButton(text, action) {
     const btn = document.createElement("button");
     btn.textContent = text;
+    btn.classList.add("green-button");
     btn.addEventListener("click", () => {
       playSound(soundClick);
       action();
     });
     challengeButtons.appendChild(btn);
   }
-
-  // Controlli delle sfide
   function checkHigherLower(isHigher) {
     const oldValue = currentCard.value;
     drawCard();
@@ -101,6 +88,7 @@ window.addEventListener("DOMContentLoaded", () => {
     newChallenge();
   }
 
+  // Controllo Rosso/Nero
   function checkRedBlack(choice) {
     drawCard();
     const reds = ["C", "Q"]; // cuori, quadri
@@ -114,7 +102,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     newChallenge();
   }
-
   function checkEvenOdd(isEven) {
     drawCard();
     if ((isEven && currentCard.value % 2 === 0) ||
