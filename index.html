@@ -4,61 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deck Step - Demo</title>
-<link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-
-    <div class="top-controls">
+  <div id="container">
+    <h1 id="gameTitle">Deck Step</h1>
+    <div id="topBar">
+      <button id="startButton">🎮 Start Game</button>
       <select id="languageSelect">
-        <option value="it">🇮🇹 Italiano</option>
-        <option value="en">🇬🇧 English</option>
+        <option value="it">🇮🇹 IT</option>
+        <option value="en">🇬🇧 EN</option>
       </select>
-      <div class="icons">
-        <button id="historyButton" class="icon-button" title="Cronologia">🕒</button>
-        <div id="soundToggle" class="icon-button">🔊</div>
-      </div>
+      <button id="soundToggle">🔊</button>
+      <button id="rulesToggle">📜 Regolamento</button>
     </div>
-
-    <h1 id="gameTitle">Deck Step - Demo</h1>
-    <div id="rulesLabel" class="rules-toggle">📜 Regole</div>
     <div id="rulesPanel" class="hidden">
-      <p>Questa è una versione demo di <strong>Deck Step</strong>.  
-      Puoi giocare liberamente senza puntate e senza limiti di game over o vittoria.</p>
-      <ul>
-        <li>Un solo livello (facile).</li>
-        <li>Ogni turno devi indovinare la prossima carta.</li>
-        <li>Dopo 3 risposte corrette consecutive si attiva un minigioco: vincerai sempre un <strong>Jolly</strong>.</li>
-      </ul>
-    </div>
-
-    <div id="gameSetup">
-      <button id="startButton" class="green-button">🎮 Inizia la demo</button>
+      <p>
+        Benvenuto in <strong>Deck Step - Demo</strong>!<br>
+        Qui puoi giocare senza limiti, provando solo il livello facile.<br>
+        Completa le sfide Maggiore/Minore, Rosso/Nero, Pari/Dispari ecc.<br>
+        Dopo 3 risposte corrette consecutive ottieni sempre un Jolly 🎉.
+      </p>
     </div>
     <div id="gameArea" class="hidden">
-      <p id="challengeText">Sfida</p>
-      <div id="challengeButtons"></div>
       <div id="cardsArea">
-        <img id="currentCardImg" src="cards/card_back.png" alt="Carta attuale">
-        <img id="drawnCardImg" src="cards/card_back.png" alt="Carta pescata">
+        <div>
+          <h3 id="currentCardLabel">Carta attuale</h3>
+          <img id="currentCardImg" src="cards/card_back.png" alt="Carta attuale">
+        </div>
+        <div>
+          <h3 id="drawnCardLabel">Carta pescata</h3>
+          <img id="drawnCardImg" src="cards/card_back.png" alt="Carta pescata">
+        </div>
       </div>
-      <div id="scorePanel">
-        <span id="correctLabel">✅ Corrette: <span id="correctCount">0</span></span>
-        <span id="errorLabel">❌ Errori: <span id="errorCount">0</span></span>
-        <span id="jollyLabel">🃏 Jolly: <span id="jollyCount">0</span></span>
+      <div id="challengeArea">
+        <p id="challengeText">Sfida in corso...</p>
+        <div id="challengeButtons"></div>
       </div>
-      <button id="useJollyBtn" class="hidden">🃏 Usa Jolly</button>
+      <div id="progressArea">
+        <p>✅ Corrette: <span id="correctLabel">0</span></p>
+        <p>❌ Errori: <span id="errorLabel">0</span></p>
+        <p>🃏 Jolly: <span id="jollyLabel">0</span></p>
+      </div>
     </div>
   </div>
   <div id="minigiocoJolly" class="hidden">
-    <h2 id="minigiocoTitle">Mini-gioco Jolly</h2>
-    <div class="cards-row">
-      <img id="minicard1" src="cards/card_back.png" alt="Carta minigioco">
-      <img id="minicard2" src="cards/card_back.png" alt="Carta minigioco">
+    <h2 id="minigiocoTitle">MiniGioco!</h2>
+    <div id="minicards">
+      <img id="minicard1" src="cards/card_back.png" alt="Mini card 1">
+      <img id="minicard2" src="cards/card_back.png" alt="Mini card 2">
     </div>
     <button id="minigiocoCloseBtn">Chiudi</button>
   </div>
- <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
