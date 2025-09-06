@@ -1,37 +1,64 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deck Step Demo</title>
-  <link rel="stylesheet" href="style-demo.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deck Step - Demo</title>
+  <link rel="stylesheet" href="style-demo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
+
     <div class="top-controls">
       <select id="languageSelect">
         <option value="it">🇮🇹 Italiano</option>
         <option value="en">🇬🇧 English</option>
       </select>
-      <div style="display:flex; flex-direction: column; gap:6px;">
-        <button id="historyButton" class="icon-button" title="Cronologia" aria-label="Cronologia">🕒</button>
+      <div class="icons">
+        <button id="historyButton" class="icon-button" title="Cronologia">🕒</button>
         <div id="soundToggle" class="icon-button">🔊</div>
       </div>
     </div>
 
-    <h1 id="gameTitle">Deck Step Demo</h1>
+    <h1 id="gameTitle">Deck Step - Demo</h1>
+    <div id="rulesLabel" class="rules-toggle">📜 Regole</div>
+    <div id="rulesPanel" class="hidden">
+      <p>Questa è una versione demo di <strong>Deck Step</strong>.  
+      Puoi giocare liberamente senza puntate e senza limiti di game over o vittoria.</p>
+      <ul>
+        <li>Un solo livello (facile).</li>
+        <li>Ogni turno devi indovinare la prossima carta.</li>
+        <li>Dopo 3 risposte corrette consecutive si attiva un minigioco: vincerai sempre un <strong>Jolly</strong>.</li>
+      </ul>
+    </div>
 
-    <button id="startButton">🎮 Inizia</button>
-
+    <div id="gameSetup">
+      <button id="startButton" class="green-button">🎮 Inizia la demo</button>
+    </div>
     <div id="gameArea" class="hidden">
-      <p id="challengeText"></p>
+      <p id="challengeText">Sfida</p>
       <div id="challengeButtons"></div>
-      <div class="cards">
-        <img id="currentCardImg" src="cards/card_back.png" alt="Carta attuale" />
+      <div id="cardsArea">
+        <img id="currentCardImg" src="cards/card_back.png" alt="Carta attuale">
+        <img id="drawnCardImg" src="cards/card_back.png" alt="Carta pescata">
       </div>
+      <div id="scorePanel">
+        <span id="correctLabel">✅ Corrette: <span id="correctCount">0</span></span>
+        <span id="errorLabel">❌ Errori: <span id="errorCount">0</span></span>
+        <span id="jollyLabel">🃏 Jolly: <span id="jollyCount">0</span></span>
+      </div>
+      <button id="useJollyBtn" class="hidden">🃏 Usa Jolly</button>
     </div>
   </div>
-
+  <div id="minigiocoJolly" class="hidden">
+    <h2 id="minigiocoTitle">Mini-gioco Jolly</h2>
+    <div class="cards-row">
+      <img id="minicard1" src="cards/card_back.png" alt="Carta minigioco">
+      <img id="minicard2" src="cards/card_back.png" alt="Carta minigioco">
+    </div>
+    <button id="minigiocoCloseBtn">Chiudi</button>
+  </div>
   <script src="script-demo.js"></script>
 </body>
 </html>
