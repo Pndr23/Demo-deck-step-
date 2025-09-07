@@ -16,6 +16,7 @@ const soundCorrect = new Audio('correct.mp3');
 const soundWrong = new Audio('wrong.mp3');
 const soundFlip = new Audio("flip.mp3");
 const soundMinigame = new Audio('minigame.mp3');
+const soundMultiplier = new Audio('multiplier.mp3');
 let audioOn = localStorage.getItem("audioOn") !== "false";
 function unlockAudio() {
   const sounds = [
