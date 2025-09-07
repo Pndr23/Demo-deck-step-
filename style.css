@@ -2,212 +2,284 @@ body {
   margin: 0;
   min-height: 100vh;
   background: #800020;
-  font-family: 'Poppins', sans-serif;
-  overflow-x: hidden;
-  overflow-y: auto;
-  color: white;
+  font-family: 'Trebuchet MS', sans-serif;
+  overflow-x: visible;
+  overflow-y: visible;
 }
+
 .hidden {
   display: none;
 }
-#gameTitle {
-  font-size: 2.2rem;
+
+.pulse {
+  animation: pulseAnimation 1.5s infinite;
+  font-size: 2rem;
   font-weight: bold;
-  text-transform: uppercase;
-  color: gold;
+  color: #2ecc71;
   text-align: center;
-  margin-bottom: 12px;
-  text-shadow: 0 0 6px #ffcc00;
+  margin: 20px 0;
 }
-#rulesLabel {
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin-bottom: 1.2rem;
-  text-decoration: underline;
-  color: white;
+
+@keyframes pulseAnimation {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
 }
-#challengeText {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: gold;
-  text-shadow: 0 0 5px black, 0 0 6px gold;
-  margin-top: 0.8rem;
-}
+
 .container {
   text-align: center;
   background: url(sfondo.jpg.jpg);
   border: 2px solid gold;
+  color: white;
+  padding: 0.8rem;
+  margin-top: 10px;
+  margin-bottom: 5px;
   border-radius: 20px;
-  box-shadow: 0 0 25px gold;
-  padding: 0.6rem;
-  margin: 0.6rem;
+  box-shadow: 0 0 20px gold;
+  overflow: visible;
 }
+
 select, button {
   margin: 6px;
-  padding: 8px 14px;
-  font-size: 0.9rem;
+  padding: 10px 16px;
+  font-size: 1rem;
   border-radius: 8px;
   border: none;
   font-weight: bold;
   text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
 }
+
+/* ✅ Bottoni verdi */
 button {
-  background: linear-gradient(to bottom, #d4af37, #b8860b);
-  color: #000;
+  background: #14d928 !important;
+  color: white !important;
+  cursor: pointer;
+  border: 2px solid white !important;
+  font-weight: bold;
 }
+
 button:hover {
-  background: linear-gradient(to bottom, #ffd700, #daa520);
-  box-shadow: 0 0 8px gold;
+  background: #0fae1f !important;
+  box-shadow: 0 0 12px #14d928 !important;
 }
-.green-button {
-  background-color: #14d928 !important;
-  color: white !important;
-  border: 2px solid white !important;
-  font-weight: bold !important;
+
+img {
+  width: 200px;
+  height: auto;
+  margin-top: 0.5rem;
 }
-.red-button {
-  background-color: #ff0000 !important;
-  color: white !important;
-  border: 2px solid white !important;
-  font-weight: bold !important;
-}
-#scorePanel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
+
+#rulesLabel {
   font-size: 1.2rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  text-decoration: underline;
+  color: white;
 }
-#scorePanel .top-row {
-  display: flex;
-  justify-content: center;
-  gap: 1.4rem;
-}
-#pointsLabel, 
+
+#scoreValue,
 #correctLabel,
 #errorLabel,
-#jollyLabel {
+#jollyLabel,
+#correctCount,
+#errorCount {
   font-size: 1.2rem;
   font-weight: bold;
   color: white;
   text-shadow: 0 0 3px gold;
 }
-#scoreValue,
-#correctCount,
-#errorCount {
-  font-size: 1.2rem;
+
+#challengeText {
+  font-size: 1.5rem;
   font-weight: bold;
   color: gold;
-  margin-left: 4px;
+  text-shadow: 0 0 5px black, 0 0 8px gold;
+  margin-top: 1rem;
 }
+
+.multiplier-label {
+  font-size: 1rem;
+  color: gold;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+
+#gameTitle {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: gold;
+  text-align: center;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px #ffcc00;
+}
+
 .gain-label {
   display: inline-block;
   background-color: rgba(0, 0, 0, 0.85);
   color: #FFD700;
-  font-size: 1.3rem;
-  margin-left: 8px;
-  padding: 4px 8px;
-  border-radius: 8px;
+  font-size: 1.2rem;
+  margin-left: 10px;
+  padding: 6px 12px;
+  border-radius: 10px;
   font-weight: bold;
   border: 2px solid gold;
-  box-shadow: 0 0 6px gold;
+  box-shadow: 0 0 8px gold;
 }
-#currentCardImg,
-#drawnCardImg {
-  width: 140px;
-  height: auto;
-  display: block;
-  margin: 0.6rem auto;
-  backface-visibility: hidden;
-  transform-style: preserve-3d;
-}
+
 .progress-path {
   display: flex;
   justify-content: center;
-  gap: 25px;
-  margin: 10px auto;
-  padding: 6px 0;
+  gap: 20px;
+  position: relative;
+  padding-top: 5px;
+  padding-bottom: 4px;
+  min-height: 20px;
 }
 
 .progress-step {
-  flex: 0 0 auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
+
 .circle {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background-color: #222;
   border: 2px solid #FFD700;
-  box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
-  margin-bottom: 4px;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  margin-bottom: 6px;
   transition: all 0.3s ease;
 }
+
+/* ✅ Verde quando completata */
 .progress-step.completed-step .circle {
   background-color: #4CAF50 !important;
   border-color: #4CAF50 !important;
-  box-shadow: 0 0 6px #4CAF50;
+  box-shadow: 0 0 10px #4CAF50;
   transform: scale(1.1);
 }
+
 .progress-step.active-step .circle {
   background-color: #2196F3 !important;
 }
-.multiplier-label {
-  font-size: 0.9rem;
-  color: gold;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 2px;
-}
+
+/* 🔹 Minigioco */
 #minigiocoJolly {
-  position: fixed;   
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: url('sfondomini.png') center center / cover no-repeat;
-  display: none;        
+  background-color: #800020;
+  display: none;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  padding: 1rem;
+  padding: 2rem;
+  box-sizing: border-box;
   z-index: 9999;
+  flex-direction: column;
 }
+
 #minigiocoJolly h2 {
-  font-size: 2.2rem;
+  font-size: 3rem;
   color: gold;
-  font-weight: 700;
-  margin-bottom: 20px;
-  text-shadow: 0 0 6px gold;
+  font-weight: 800;
+  text-shadow: 0 0 10px gold;
+  margin-bottom: 25px;
+  text-align: center;
 }
+
 #minigiocoJolly div.carte {
   display: flex;
-  gap: 20px;             
+  gap: 20px;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
+  width: 100%;
 }
+
 #minigiocoJolly img {
-  width: 140px;    
+  width: 140px;
   height: 200px;
   border-radius: 10px;
   cursor: pointer;
-  box-shadow: 0 0 10px gold;
+  box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.8);
+}
+
+#minigiocoJolly img.covered {
+  animation: glowPulse 2.5s infinite;
+}
+
+#minigiocoJolly img.selected {
+  box-shadow: 0 0 30px 10px gold !important;
+  transform: scale(1.1);
   transition: all 0.3s ease;
 }
-#minigiocoJolly img.selected {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px gold;
+
+@keyframes glowPulse {
+  0%, 100% { filter: drop-shadow(0 0 3px gold); }
+  50% { filter: drop-shadow(0 0 12px gold); }
 }
+
+#minigiocoCloseBtn {
+  font-size: 1rem;
+  padding: 8px 14px;
+  margin-top: 15px;
+  background: #14d928;
+  border: 2px solid white;
+  color: white;
+}
+
+#minigiocoCloseBtn:hover {
+  background: #0fae1f;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  #gameTitle { font-size: 1.6rem; }
-  #challengeText { font-size: 1.1rem; }
-  #scorePanel { font-size: 1rem; }
-  #currentCardImg, #drawnCardImg { width: 100px; }
-  .circle { width: 16px; height: 16px; }
-  .multiplier-label { font-size: 0.75rem; }
-  #minigiocoJolly h2 { font-size: 1.6rem; }
-  #minigiocoJolly img { width: 100px; height: 150px; }
+  #gameTitle {
+    font-size: 1.5rem;
+  }
+
+  #challengeText {
+    font-size: 1.2rem;
+  }
+
+  #scoreValue,
+  #correctLabel,
+  #errorLabel,
+  #correctCount,
+  #errorCount {
+    font-size: 1rem;
+  }
+
+  button,
+  select {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+
+  img {
+    width: 120px;
+  }
+
+  .multiplier-label {
+    font-size: 0.8rem;
+  }
+
+  #minigiocoJolly h2 {
+    font-size: 2rem;
+  }
+
+  #minigiocoJolly img {
+    width: 100px;
+    height: 150px;
+  }
 }
