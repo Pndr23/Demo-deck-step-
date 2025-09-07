@@ -295,3 +295,10 @@ img {
 #historyButton.icon-button:hover {
   filter: brightness(1.15);
 }
+  .progress-step.completed-step .circle {
+  background-color: #4CAF50 !important;  
+  border-color: #4CAF50 !important;
+  box-shadow: 0 0 10px #4CAF50;
+  transform: scale(1.1);
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
