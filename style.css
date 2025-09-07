@@ -53,14 +53,16 @@ button:hover {
   box-shadow: 0 0 12px gold;
 }
 .green-button {
-  background-color: #14d928 !important;
+  background-color: #14d928 !important; /* verde */
   color: white !important;
   border: 2px solid white !important;
+  font-weight: bold !important;
 }
 .red-button {
-  background-color: #ff0000 !important;
+  background-color: #ff0000 !important; /* rosso */
   color: white !important;
   border: 2px solid white !important;
+  font-weight: bold !important;
 }
 #currentCardImg,
 #drawnCardImg {
@@ -116,8 +118,8 @@ img { max-width: 100%; height: auto; }
   transition: all 0.3s ease;
 }
 .progress-step.completed-step .circle {
-  background-color: #4CAF50;
-  border-color: #4CAF50;
+  background-color: #4CAF50 !important;  /* verde brillante */
+  border-color: #4CAF50 !important;
   box-shadow: 0 0 10px #4CAF50;
   transform: scale(1.1);
 }
