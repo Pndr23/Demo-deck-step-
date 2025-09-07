@@ -10,14 +10,18 @@ let correctStreak = 0;
 let currentLanguage = "it";
 let currentLevel = "easy";
 let puntataIniziale = parseFloat(document.getElementById("bet").value);
+
 const moltiplicatoriFacile = [1.1,1.2,1.3,1.5,1.8,2,2.2,2.5,3,5];
+
 const soundClick = new Audio('click.mp3');
 const soundCorrect = new Audio('correct.mp3');
 const soundWrong = new Audio('wrong.mp3');
 const soundFlip = new Audio("flip.mp3");
 const soundMinigame = new Audio('minigame.mp3');
 const soundMultiplier = new Audio('multiplier.mp3');
+
 let audioOn = localStorage.getItem("audioOn") !== "false";
+
 function unlockAudio() {
   const sounds = [
     soundClick, soundCorrect, soundWrong, soundFlip,
@@ -34,18 +38,21 @@ function unlockAudio() {
 }
 document.addEventListener("click", unlockAudio);
 document.addEventListener("touchstart", unlockAudio);
+
 let moltiplicatori = {
   easy: moltiplicatoriFacile,
 };
 const tappeMassime = {
   easy: 10,
 };
+
 function playSound(sound) {
   if (audioOn) { 
     sound.currentTime = 0;
     sound.play();
   }
  }
+
 window.addEventListener("DOMContentLoaded", () => {
   const soundToggle = document.getElementById("soundToggle");
   if (!soundToggle) return;
@@ -54,14 +61,16 @@ window.addEventListener("DOMContentLoaded", () => {
     event.stopPropagation();
     audioOn = !audioOn;
     soundToggle.textContent = audioOn ? "🔊" : "🔇";
-    localStorage.setItem("audioOn", audioOn); // ✅ salvo scelta
+    localStorage.setItem("audioOn", audioOn); 
   });
 });
+
 let gameAreaOriginalDisplay = null;
-let gameEnded = false;
 let partitaIniziata = false;
+
 let HISTORY_KEY = 'deckstep_history_v1';
 let activeSession = null;
+
 function loadHistory() {
   try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
   catch { return []; }
@@ -144,9 +153,11 @@ function renderHistory() {
     </div>
   `).join('');
 }
+
 document.addEventListener('DOMContentLoaded', () => {
 initHistoryUI();
 renderHistory();
+
 function createBetBadge() {
     const gameArea = document.getElementById("gameArea");
     let badge = document.getElementById("betBadge");
@@ -168,7 +179,6 @@ function createBetBadge() {
     puntataIniziale = parseFloat(document.getElementById("bet").value);
     badge.textContent = `Puntata: €${puntataIniziale.toFixed(2)}`;
 }
-
 function updateBetBadge() {
     const badge = document.getElementById("betBadge");
     if (badge) {
@@ -179,6 +189,127 @@ function updateBetBadge() {
 document.getElementById("startButton").addEventListener("click", () => {
 createBetBadge(); 
 });
+
+  function showMinigiocoMoltiplicatore(callback) {
+  playSound(soundMinigame);
+  if (minigiocoAttivo) return;
+  minigiocoAttivo = true;
+  minigiocoCallback = callback;
+
+  const popup = document.getElementById("minigiocoJolly");
+  if (gameAreaOriginalDisplay === null) {
+    gameAreaOriginalDisplay = getComputedStyle(gameArea).display;
+  }
+  gameArea.style.display = "none";
+  popup.style.display = "flex";
+  popup.style.flexDirection = "column";
+  popup.style.alignItems = "center";
+  popup.style.justifyContent = "center";
+  popup.style.paddingTop = "20";
+  popup.style.width = "100%";
+  popup.style.height = "100vh";
+  popup.style.backgroundColor = "#800020";
+  popup.style.backgroundImage = "url('sfondomini.png')";
+  popup.style.backgroundPosition = "center";
+  popup.style.backgroundSize = "cover";
+  popup.style.marginTop = "0";
+  popup.style.marginBottom = "0";
+
+  const title = document.getElementById("minigiocoTitle");
+  const cardElems = [document.getElementById("minicard1"), document.getElementById("minicard2")];
+  const closeBtn = document.getElementById("minigiocoCloseBtn");
+
+  function resizeMinigioco() {
+    let screenWidth = window.innerWidth;
+    if (title) {
+      title.style.order = "1";
+      title.style.fontSize = screenWidth < 600 ? "0.8em" : "1.8em";
+      title.style.color = "white";
+      title.style.marginBottom = screenWidth < 600 ? "6px" : "15px";
+      title.style.textAlign = "center";
+    }
+    cardElems.forEach(c => {
+      c.style.order = "2";
+      if (screenWidth < 600) {
+        c.style.width = "90px";
+        c.style.height = "150px";
+        c.style.margin = "0 4px";
+      } else {
+        c.style.width = "160px";
+        c.style.height = "230px";
+        c.style.margin = "0 12px";
+      }
+    });
+    if (closeBtn) {
+      closeBtn.style.order = "3";
+      closeBtn.style.marginTop = screenWidth < 600 ? "10px" : "25px";
+      closeBtn.style.fontSize = screenWidth < 600 ? "0.75em" : "1.1em";
+      closeBtn.style.padding = screenWidth < 600 ? "4px 8px" : "8px 16px";
+    }
+    popup.style.justifyContent = screenWidth < 600 ? "flex-start" : "center";
+    popup.style.paddingTop = screenWidth < 600 ? "10px" : "20px";
+  }
+  resizeMinigioco();
+  window.addEventListener("resize", resizeMinigioco);
+
+  const moltiplicatoriMinigioco = [2, 3, 4, 5, 10];
+  function generaCartaMoltiplicatore() {
+    const valore = moltiplicatoriMinigioco[Math.floor(Math.random() * moltiplicatoriMinigioco.length)];
+    const suitsLetters = ['C', 'P', 'F', 'Q'];
+    const value = Math.floor(Math.random() * 10) + 1;
+    const suitLetter = suitsLetters[Math.floor(Math.random() * suitsLetters.length)];
+    return {
+      type: "moltiplicatore",
+      value: valore,
+      img: `cards/card_${value}${suitLetter}.png`
+    };
+  }
+
+  let carte = [generaCartaMoltiplicatore(), generaCartaMoltiplicatore()];
+  carte.sort(() => Math.random() - 0.5);
+
+  cardElems.forEach((el, i) => {
+    el.src = "cards/card_back.png";
+    el.classList.remove("flipped", "selected");
+    el.classList.add("covered");
+    el.style.borderColor = "transparent";
+    el.style.cursor = "pointer";
+    el.dataset.type = carte[i].type;
+    el.dataset.img = carte[i].img;
+    el.dataset.value = carte[i].value;
+    el.onclick = () => {
+      if (!minigiocoAttivo) return;
+      minigiocoAttivo = false;
+      cardElems.forEach(c => c.classList.remove("covered"));
+      el.classList.add("flipped");
+      el.style.cursor = "default";
+      setTimeout(() => {
+        el.src = el.dataset.img;
+        el.classList.add("selected");
+        playSound(soundMultiplier);
+        alert(`Hai vinto un moltiplicatore bonus x${el.dataset.value}!`);
+      }, 300);
+      setTimeout(() => {
+        if (minigiocoCallback)
+          minigiocoCallback("moltiplicatore", parseInt(el.dataset.value || "0"));
+        minigiocoCallback = null;
+        popup.style.display = "none";
+        gameArea.style.display = gameAreaOriginalDisplay;
+        window.removeEventListener("resize", resizeMinigioco);
+      }, 1700);
+    };
+  });
+
+  closeBtn.onclick = () => {
+    if (!minigiocoAttivo) return;
+    minigiocoAttivo = false;
+    minigiocoCallback = null;
+    popup.style.display = "none";
+    gameArea.style.display = gameAreaOriginalDisplay;
+    window.removeEventListener("resize", resizeMinigioco);
+  };
+}
+
 function aggiornaMoltiplicatori() {
   currentLevel = "easy"; 
   creaProgressSteps(); 
@@ -191,6 +322,7 @@ function aggiornaMoltiplicatori() {
   });
   aggiornaGuadagno(correctCount);
 }
+
 const startButton = document.getElementById("startButton");
 const gameSetup = document.getElementById("gameSetup");
 const challengeText = document.getElementById("challengeText");
@@ -204,17 +336,19 @@ const progressCounter = document.getElementById("progressCounter");
 const progressPath = document.getElementById("progressPath");
 const languageSelect = document.getElementById("languageSelect");
 const selectBet = document.getElementById("bet");
+
 selectBet.addEventListener("change", () => {
   puntataIniziale = parseFloat(selectBet.value);
 });
 rulesToggle.addEventListener("click", () => {
   rulesPanel.classList.toggle("hidden");
 });
+
 startButton.addEventListener("click", () => {
   const dummy = new Audio('click.mp3');
   dummy.play().catch(() => {});
- startHistorySession(); 
- aggiornaMoltiplicatori();
+  startHistorySession(); 
+  aggiornaMoltiplicatori();
   preloadCardImages();
   gameSetup.classList.add("hidden");
   gameArea.classList.remove("hidden");
@@ -226,15 +360,18 @@ startButton.addEventListener("click", () => {
     sel.addEventListener("change", () => playSound(soundClick));
   });
 });
+
 languageSelect.addEventListener("change", () => {
   currentLanguage = languageSelect.value;
   updateLanguage();
 });
+
 function updateScore() {
   document.getElementById("scoreValue").innerText = correctCount;
   correctCountSpan.textContent = correctCount;
   errorCountSpan.textContent = errorCount;
 } 
+
 function updateProgress() {
   const steps = progressPath.querySelectorAll(".progress-step");
   steps.forEach((step, i) => {
@@ -245,12 +382,13 @@ function updateProgress() {
     }
   });
   progressCounter.textContent = `${translate("stage")}: ${tappe}`;
-    const activeStep = steps[tappe - 1];
+  const activeStep = steps[tappe - 1];
   if (activeStep) {
- progressPath.scrollLeft = activeStep.offsetLeft - progressPath.offsetWidth / 2 + activeStep.offsetWidth / 2;
+    progressPath.scrollLeft = activeStep.offsetLeft - progressPath.offsetWidth / 2 + activeStep.offsetWidth / 2;
   }
 } 
- function creaProgressSteps() {
+
+function creaProgressSteps() {
   const progressPath = document.getElementById("progressPath");
   progressPath.innerHTML = ""; 
   const numeroTappe = tappeMassime[currentLevel] || 10;
@@ -264,11 +402,12 @@ function updateProgress() {
     step.appendChild(circle);
     const multiplier = document.createElement("div");
     multiplier.classList.add("multiplier-label");
-  multiplier.textContent = moltiplicatoriLivello[i] !== undefined ? "x" + moltiplicatoriLivello[i] : "";
+    multiplier.textContent = moltiplicatoriLivello[i] !== undefined ? "x" + moltiplicatoriLivello[i] : "";
     step.appendChild(multiplier);
     progressPath.appendChild(step);
   }
 }
+
 function preloadCardImages() {
   for (let i = 1; i <= 40; i++) {
     const img = new Image();
@@ -277,11 +416,9 @@ function preloadCardImages() {
   const back = new Image();
   back.src = "cards/card_back.png";
 } 
+
 function startGame() {
- console.log("startGame chiamato");  // Controlla se la funzione viene eseguita
-  console.log("Stato schermata gioco:", gameArea.hidden);
   partitaIniziata = true;
-  gameEnded = false;
   tappe = 0;
   creaProgressSteps(); 
   errorCount = 0; 
@@ -293,6 +430,7 @@ function startGame() {
   displayDrawnCard(null, true);
   generateChallenge();
 }
+
 function drawCard(avoidValue = null) {
   const suitsLetters = ['C', 'P', 'F', 'Q'];
   let index, value, suitLetter;
@@ -302,12 +440,14 @@ function drawCard(avoidValue = null) {
     const suitIndex = Math.floor((index - 1) / 10);
     suitLetter = suitsLetters[suitIndex];
   }
-    while (value === avoidValue);
+  while (value === avoidValue);
   return { value, suit: suitLetter };
 } 
+
 function displayCurrentCard(card) {
    currentCardImg.src = `cards/card_${card.value}${card.suit}.png`;
 } 
+
 function displayDrawnCard(card, covered = false) {
   const drawnCardImg = document.getElementById("drawnCardImg");
   if (covered || !card) {
@@ -316,50 +456,42 @@ function displayDrawnCard(card, covered = false) {
     drawnCardImg.src = `cards/card_${card.value}${card.suit}.png`;
   }
 }
+
 function isRed(suit) {
-  return suit === "C" || suit === "Q";
-} 
+   return suit === "C" || suit === "Q";
+}
+
 function isBlack(suit) {
   return suit === "F" || suit === "P";
 }
+
 function generateChallenge() {
   displayDrawnCard(null, true);
   let challenges = [
     { key: "higherLower", label: { it: "Maggiore o Minore", en: "Higher or Lower" } },
     { key: "evenOdd", label: { it: "Pari o Dispari", en: "Even or Odd" } },
     { key: "color", label: { it: "Colore", en: "Color" } },
-  ]; 
-  if (currentLevel === "hard") {
-    challenges = challenges.filter(ch => ch.key !== "color");
-  }
+  ];
+
+  // livello unico = easy, niente filtri
   const selected = challenges[Math.floor(Math.random() * challenges.length)];
   const label = selected.label[currentLanguage];
   challengeText.textContent = `${translate("challenge")}: ${label}`;
   challengeButtons.innerHTML = "";
+
   const lockedValue = currentCard.value;
-  const lockedSuit = currentCard.suit;
   if (selected.key === "higherLower") {
     addButton(translate("higher"), (next) => next.value > lockedValue);
     addButton(translate("lower"), (next) => next.value < lockedValue);
   } else if (selected.key === "evenOdd") {
     addButton(translate("even"), (next) => next.value % 2 === 0);
     addButton(translate("odd"), (next) => next.value % 2 !== 0);
-    }
   } else if (selected.key === "color") {
-    addButton(translate("red"), (next) => next.suit === "C" || next.suit === "Q");
-    addButton(translate("black"), (next) => next.suit === "F" || next.suit === "P");
+    addButton(translate("red"), (next) => isRed(next.suit));
+    addButton(translate("black"), (next) => isBlack(next.suit));
   }
-}  
-document.addEventListener("DOMContentLoaded", () => {
-  currentLanguage = navigator.language.startsWith("en") ? "en" : "it";
-  languageSelect.value = currentLanguage;
-  currentLevel = "easy";
-  updateLanguage();
-  aggiornaMoltiplicatori();
-    document.getElementById("gameArea").classList.remove("hidden");
-    startGame();
-  });
-});
+}
+
 function addButton(text, checkFn) {
   const btn = document.createElement("button");
   btn.textContent = text;
@@ -367,12 +499,11 @@ function addButton(text, checkFn) {
   btn.style.color = "white";
   btn.onclick = () => {
     playSound(soundClick);
-    console.log("clicked", text);
     const drawnCard = drawCard(currentCard.value);
     const cardName = `${drawnCard.value}${drawnCard.suit}`;
     logHistoryEvent(`Hai giocato la carta: ${cardName}`);
     const drawnImg = document.getElementById("drawnCardImg");
-    const maxErrors = currentLevel === "hard" ? 3 : 4;
+
     playSound(soundFlip);
     drawnImg.style.transition = "transform 0.6s ease";
     drawnImg.style.transform = "rotateY(90deg) scale(1.05)";
@@ -383,51 +514,55 @@ function addButton(text, checkFn) {
         currentCard = drawnCard;
         displayCurrentCard(currentCard);
         displayDrawnCard(null, true);
+
         const result = checkFn(drawnCard);
         if (result) {
           correctCount++;
           correctStreak++;
           playSound(soundCorrect);
-            const totale = calcolaGuadagno(correctCount);
-          } else {
-            tappe++;
-            if (correctStreak === 3) {
-              correctStreak = 0;
-              showMinigiocoJolly((scelta, valore) => {
-             if (scelta === "moltiplicatore") {
-                  moltiplicatoreBonus += valore;
-                  alert(`Hai vinto un moltiplicatore bonus x${valore}! Sarà sommato al guadagno.`);
-                  updateScore();
-                }
-              });
-            }
+
+          if (correctStreak === 3) {
+            correctStreak = 0;
+            showMinigiocoMoltiplicatore((tipo, valore) => {
+              moltiplicatoreBonus += valore;
+              alert(`Hai vinto un moltiplicatore bonus x${valore}!`);
+              updateScore();
+            });
           }
         } else {
           correctStreak = 0;
           errorCount++;
-          if (errorCount < maxErrors) {
-            playSound(soundWrong);
-}
-        generateChallenge();
+          playSound(soundWrong);
         }
+
+        generateChallenge();
         updateScore();
         updateProgress();
         aggiornaGuadagno(correctCount);
+
       }, 1500);
     }, 300);
   };
   challengeButtons.appendChild(btn);
 }
+
+function updateScore() {
+  document.getElementById("scoreValue").innerText = correctCount;
+  correctCountSpan.textContent = correctCount;
+  errorCountSpan.textContent = errorCount;
+}
+
 function aggiornaGuadagno(corretti) {
- const label = document.getElementById("gainLabel");
+  const label = document.getElementById("gainLabel");
   let guadagno = puntataIniziale;
-  const moltiplicatoriLivello = moltiplicatori[currentLevel]; 
+  const moltiplicatoriLivello = moltiplicatori[currentLevel];
   for (let i = 0; i < corretti && i < moltiplicatoriLivello.length; i++) {
     guadagno *= moltiplicatoriLivello[i];
   }
- guadagno += moltiplicatoreBonus * puntataIniziale; 
+  guadagno += moltiplicatoreBonus * puntataIniziale;
   label.textContent = "+€" + guadagno.toFixed(2);
 }
+
 function updateLanguage() {
   document.querySelector("html").lang = currentLanguage;
   document.getElementById("gameTitle").textContent = translate("title");
@@ -442,6 +577,7 @@ function updateLanguage() {
   rulesPanel.innerHTML = translate("rulesText");
   document.getElementById("withdrawLabel").textContent = translate("withdraw");
 }
+
 function translate(key) {
   const t = {
     it: {
@@ -461,13 +597,12 @@ function translate(key) {
       stage: "Tappa",
       points: "Punti:",
       bet: "Puntata:",
-      rulesText: `<p>Benvenuto in <strong>Deck Step</strong>! Il tuo obiettivo è completare 10-15-20 tappe indovinando le carte successive e accumulando vincite.</p>
+      withdraw: "Ritira",
+      rulesText: `<p>Benvenuto in <strong>Deck Step</strong>! Indovina le carte successive e completa 10 tappe.</p>
         <ul>
-          <li>Scegli la <strong>puntata iniziale</strong> (€0,10–€5) e la difficoltà (Facile, Media, Difficile).</li>
-          <li>Ogni turno pesca una carta e affronta una sfida: Maggiore/Minore, Colore, Seme, Pari/Dispari, Intervallo o Numero Esatto (solo Difficile).</li>
-          <li>Dopo 3 risposte corrette consecutive, ottieni un <strong>Jolly</strong> o un <strong>Moltiplicatore Bonus</strong>.</li>
-          <li>Puoi riscattare le vincite in qualsiasi momento, oppure continuare fino all'ultima tappa.</li>
-          <li>Il numero massimo di errori: Facile/Medio = 4, Difficile = 3. Senza Jolly disponibili, la partita termina.</li>
+          <li>Ogni turno pesca una carta e affronta una sfida: Maggiore/Minore, Colore o Pari/Dispari.</li>
+          <li>Dopo 3 risposte corrette consecutive ottieni un <strong>Moltiplicatore Bonus</strong>.</li>
+          <li>La partita termina se sbagli troppe volte.</li>
         </ul>`,
     },
     en: {
@@ -487,37 +622,28 @@ function translate(key) {
       stage: "Stage",
       points: "Points:",
       bet: "Bet:",
-      rulesText: `<p>Welcome to <strong>Deck Step</strong>! Your goal is to complete 10-15-20 stages by guessing the next cards and accumulating winnings.</p>
+      withdraw: "Withdraw",
+      rulesText: `<p>Welcome to <strong>Deck Step</strong>! Guess the next cards and complete 10 stages.</p>
         <ul>
-          <li>Choose your <strong>starting bet</strong> (€0.10–€5) and difficulty (Easy, Medium, Hard).</li>
-          <li>Each turn draws a card and gives a challenge: Higher/Lower, Color, Suit, Even/Odd, Range, or Exact Number (Hard only).</li>
-          <li>After 3 correct answers in a row, earn a <strong>Joker</strong> or a <strong>Bonus Multiplier</strong>.</li>
-          <li>You can withdraw winnings anytime or continue until the last stage.</li>
-          <li>Maximum mistakes allowed: Easy/Medium = 4, Hard = 3. Without Jokers, the game ends.</li>
+          <li>Each turn draws a card and gives a challenge: Higher/Lower, Color or Even/Odd.</li>
+          <li>After 3 correct answers in a row you earn a <strong>Bonus Multiplier</strong>.</li>
+          <li>The game ends if you make too many mistakes.</li>
         </ul>`,
     }
   };
   return t[currentLanguage][key];
 }
-document.addEventListener("DOMContentLoaded", () => {
-  currentLanguage = navigator.language.startsWith("en") ? "en" : "it";
-  languageSelect.value = currentLanguage;
-  updateLanguage(); 
-  aggiornaMoltiplicatori();
-  startGame(); 
-});
+
 function calcolaGuadagno(corretti) {
   let guadagno = puntataIniziale;
-    const moltiplicatoriLivello = moltiplicatori[currentLevel];
+  const moltiplicatoriLivello = moltiplicatori[currentLevel];
   for (let i = 0; i < corretti && i < moltiplicatoriLivello.length; i++) {
-    guadagno *=  moltiplicatoriLivello[i];
+    guadagno *= moltiplicatoriLivello[i];
   }
-   guadagno += moltiplicatoreBonus * puntataIniziale; 
+  guadagno += moltiplicatoreBonus * puntataIniziale;
   return guadagno;
 }
-});
+
 const gameArea = document.getElementById("gameArea");
-gameArea.style.transform = "scale(0.90)"; 
+gameArea.style.transform = "scale(0.90)";
 gameArea.style.transformOrigin = "top center";
-});
-  
