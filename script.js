@@ -518,6 +518,7 @@ function addButton(text, checkFn) {
         const result = checkFn(drawnCard);
         if (result) {
           correctCount++;
+          tappe++;
           correctStreak++;
           playSound(soundCorrect);
 
@@ -525,7 +526,6 @@ function addButton(text, checkFn) {
             correctStreak = 0;
             showMinigiocoMoltiplicatore((tipo, valore) => {
               moltiplicatoreBonus += valore;
-              alert(`Hai vinto un moltiplicatore bonus x${valore}!`);
               updateScore();
             });
           }
