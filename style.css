@@ -6,9 +6,8 @@ body {
   overflow-x: visible;
   overflow-y: visible;
 }
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
+
 .pulse {
   animation: pulseAnimation 1.5s infinite;
   font-size: 2rem;
@@ -21,72 +20,43 @@ body {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.1); opacity: 0.7; }
 }
-.container {
+/* 🌟 CONTAINER PRINCIPALE DEL GIOCO */
+.container, #gameArea {
   text-align: center;
-  background: url(sfondo.jpg.jpg);
+  background: url('sfondo.jpg.jpg') center/cover no-repeat;
   border: 2px solid gold;
   color: white;
-  padding: 0.8rem;
-  margin-top: 10px;
-  margin-bottom: 5px;
+  padding: 0.8rem 1rem;
+  margin: 10px auto 5px auto;
   border-radius: 20px;
   box-shadow: 0 0 20px gold;
   overflow: visible;
-}
-select, button {
-  margin: 6px;
-  padding: 10px 16px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
-}
-button {
-  background: linear-gradient(to bottom, #d4af37, #b8860b);
-  color: #000;
-  cursor: pointer;
-}
-button:hover {
-  background: linear-gradient(to bottom, #ffd700, #daa520);
-  box-shadow: 0 0 12px gold;
-}
-.green-button {
-  background-color: #14d928 !important;
-  color: white !important;
-  border: 2px solid white !important;
-  font-weight: bold;
-}
-.red-button {
-  background-color: #ff0000 !important;
-  color: white !important;
-  border: 2px solid white !important;
-  font-weight: bold;
+  max-width: 900px;
+  position: relative;
+  transform: scale(0.9);
+  transform-origin: top center;
 }
 
-img {
-  width: 200px;
-  height: auto;
-  margin-top: 0.5rem;
+/* Setup iniziale (prima di partire) */
+#gameSetup {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: linear-gradient(to bottom, #3a001f, #220010);
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  text-align: center;
 }
-#rulesLabel {
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  text-decoration: underline;
-  color: white;
-}
-#scoreValue,
-#correctLabel,
-#errorLabel,
-#jollyLabel,
-#correctCount,
-#errorCount {
-  font-size: 1.2rem;
+
+/* Titolo e sfide */
+#gameTitle {
+  font-size: 2rem;
+  text-transform: uppercase;
   font-weight: bold;
-  color: white;
-  text-shadow: 0 0 3px gold;
+  color: gold;
+  text-align: center;
+  margin-bottom: 15px;
+  text-shadow: 0 0 10px #ffcc00;
 }
 #challengeText {
   font-size: 1.5rem;
@@ -100,22 +70,20 @@ img {
   color: gold;
   font-weight: bold;
   text-align: center;
-  margin-top: 4px;
-  margin-bottom: 6px;
+  margin: 4px 0 6px;
   line-height: 1.1;
 }
-#gameTitle {
-  font-size: 2rem;
-  text-transform: uppercase;
+
+/* Score e badge */
+#scoreValue, #correctLabel, #errorLabel, #jollyLabel, #correctCount, #errorCount, #jollyCount {
+  font-size: 1.2rem;
   font-weight: bold;
-  color: gold;
-  text-align: center;
-  margin-bottom: 15px;
-  text-shadow: 0 0 10px #ffcc00;
+  color: white;
+  text-shadow: 0 0 3px gold;
 }
 .gain-label {
   display: inline-block;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0,0,0,0.85);
   color: #FFD700;
   font-size: 1.2rem;
   margin-left: 10px;
@@ -125,13 +93,14 @@ img {
   border: 2px solid gold;
   box-shadow: 0 0 8px gold;
 }
+
+/* Progress bar */
 .progress-path {
   display: flex;
   justify-content: center;
   gap: 20px;
   position: relative;
-  padding-top: 5px;
-  padding-bottom: 4px;
+  padding: 5px 0 4px;
   min-height: 20px;
 }
 .progress-step {
@@ -147,7 +116,7 @@ img {
   border-radius: 50%;
   background-color: #222;
   border: 2px solid #FFD700;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 6px rgba(255,255,255,0.4);
   margin-bottom: 6px;
   transition: all 0.3s ease;
 }
@@ -160,14 +129,47 @@ img {
 .progress-step.active-step .circle {
   background-color: #2196F3 !important;
 }
+
+/* Carte */
+#currentCardImg, #drawnCardImg {
+  width: 120px;
+  height: 180px;
+  margin: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  transition: transform 0.3s;
+}
+
+/* Bottoni */
+select, button {
+  margin: 6px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(255,215,0,0.4);
+}
+button {
+  background: linear-gradient(to bottom, #d4af37, #b8860b);
+  color: #000;
+  cursor: pointer;
+}
+button:hover {
+  background: linear-gradient(to bottom, #ffd700, #daa520);
+  box-shadow: 0 0 12px gold;
+}
+.green-button { background-color: #14d928 !important; color: white !important; border: 2px solid white !important; font-weight: bold; }
+.red-button { background-color: #ff0000 !important; color: white !important; border: 2px solid white !important; font-weight: bold; }
+
+/* Minigioco Jolly */
 #minigiocoJolly {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
-  background: url('sfondomini.png') center center / cover no-repeat;
-  background-color: #800020;
+  background: url('sfondomini.png') center/cover no-repeat;
   display: none;
   justify-content: center;
   align-items: center;
@@ -184,13 +186,6 @@ img {
   margin-bottom: 25px;
   text-align: center;
 }
-#minigiocoJolly div.carte {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
 #minigiocoJolly img {
   width: 140px;
   height: 200px;
@@ -198,91 +193,36 @@ img {
   cursor: pointer;
   box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.8);
 }
-#minigiocoJolly img.covered {
-  animation: glowPulse 2.5s infinite;
-}
-#minigiocoJolly img.selected {
-  box-shadow: 0 0 30px 10px gold !important;
-  transform: scale(1.1);
-  transition: all 0.3s ease;
-}
-@keyframes glowPulse {
-  0%, 100% { filter: drop-shadow(0 0 3px gold); }
-  50% { filter: drop-shadow(0 0 12px gold); }
-}
-#minigiocoCloseBtn {
-  font-size: 1rem;
-  padding: 8px 14px;
-  margin-top: 15px;
-  background: #14d928;
-  border: 2px solid white;
+#minigiocoJolly img.covered { animation: glowPulse 2.5s infinite; }
+#minigiocoJolly img.selected { box-shadow: 0 0 30px 10px gold !important; transform: scale(1.1); transition: all 0.3s ease; }
+@keyframes glowPulse { 0%,100% { filter: drop-shadow(0 0 3px gold); } 50% { filter: drop-shadow(0 0 12px gold); } }
+#minigiocoCloseBtn { font-size: 1rem; padding: 8px 14px; margin-top: 15px; background: #14d928; border: 2px solid white; color: white; }
+#minigiocoCloseBtn:hover { background: #0fae1f; }
+
+/* Schermata game over e vittoria */
+#gameOverScreen, #withdrawScreen {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
   color: white;
+  font-size: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
-#minigiocoCloseBtn:hover {
-  background: #0fae1f;
-}
+/* Responsive */
 @media (max-width: 768px) {
-  #gameTitle {
-    font-size: 1.5rem;
-  }
-  #challengeText {
-    font-size: 1.2rem;
-  }
-  #scoreValue,
-  #correctLabel,
-  #errorLabel,
-  #correctCount,
-  #errorCount {
-    font-size: 1rem;
-  }
-  button,
-  select {
-    font-size: 0.9rem;
-    padding: 8px 12px;
-  }
-  img {
-    width: 120px;
-  }
-  .multiplier-label {
-    font-size: 0.8rem;
-  }
-  #minigiocoJolly h2 {
-    font-size: 2rem;
-  }
-  #minigiocoJolly img {
-    width: 100px;
-    height: 150px;
-  }
-  #languageSelect,
-  #soundToggle,
-  #historyButton.icon-button {
-    position: fixed;
-    top: 8px;
-    z-index: 3000;
-  }
-  #languageSelect {
-    right: 10px;
-    font-size: 0.8rem;
-    padding: 3px 5px;
-  }
-  #soundToggle {
-    right: 50px;
-    width: 26px;
-    height: 26px;
-    font-size: 14px;
-  }
-  #historyButton.icon-button {
-    right: 90px;
-    width: 26px;
-    height: 26px;
-    font-size: 14px;
-  }
-}
-#historyButton.icon-button {
-  background: #333 !important;
-  color: #fff !important;
-  border: 1px solid rgba(255,255,255,.25) !important;
-}
-#historyButton.icon-button:hover {
-  filter: brightness(1.15);
+  #gameTitle { font-size: 1.5rem; }
+  #challengeText { font-size: 1.2rem; }
+  #scoreValue, #correctLabel, #errorLabel, #correctCount, #errorCount { font-size: 1rem; }
+  button, select { font-size: 0.9rem; padding: 8px 12px; }
+  img { width: 120px; height: auto; }
+  .multiplier-label { font-size: 0.8rem; }
+  #minigiocoJolly h2 { font-size: 2rem; }
+  #minigiocoJolly img { width: 100px; height: 150px; }
 }
