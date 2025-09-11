@@ -1,120 +1,120 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DECK STEP - Demo</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DECK STEP - Demo</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div class="container">
-    <div class="top-controls" 
-         style="position: absolute; top: 10px; right: 10px; display: flex; flex-direction: row; align-items: center; gap: 12px; z-index: 1000;">
-      <select id="languageSelect">
-        <option value="it">🇮🇹 Italiano</option>
-        <option value="en">🇬🇧 English</option>
-      </select>
-      <div style="display:flex; flex-direction: column; gap:6px;">
-        <button id="historyButton" class="icon-button" title="Cronologia" aria-label="Cronologia">🕒</button>
-        <div id="soundToggle" class="icon-button"
-             style="width:40px; height:40px; display:flex; align-items:center; 
-                    justify-content:center; font-size:24px; border-radius:50%; 
-                    background:#333; color:#fff; cursor:pointer;">
-          🔊
-        </div>
-      </div>
-    </div>
-    <h1 id="gameTitle">Deck Step - Demo</h1>
-    <div id="rulesLabel" class="rules-toggle">📜 Regole</div>
-    <div id="rulesPanel" class="hidden">
-      <p><strong>ITA:</strong> Benvenuto nella <strong>demo</strong> di Deck Step!  
-      In questa versione puoi provare il livello <strong>Facile</strong> senza limiti di tempo o game over.</p>
-      <ul>
-        <li>Scegli la <strong>puntata iniziale</strong> (€0,10–€5).</li>
-        <li>Ad ogni turno pesca una carta e affronta una sfida: <em>Maggiore/Minore</em>, <em>Pari/Dispari</em>, <em>Colore</em>.</li>
-        <li>Ogni risposta corretta aumenta il moltiplicatore e i punti.</li>
-        <li>Il gioco non termina: puoi continuare finché vuoi.</li>
-      </ul>
-      <hr>
-      <p><strong>ENG:</strong> Welcome to the <strong>demo</strong> of Deck Step!  
-      In this version you can try the <strong>Easy</strong> level with no time limit or game over.</p>
-      <ul>
-        <li>Select your <strong>starting bet</strong> (€0.10–€5).</li>
-        <li>Each turn you draw a card and face a challenge: <em>Higher/Lower</em>, <em>Even/Odd</em>, <em>Color</em>.</li>
-        <li>Each correct answer increases the multiplier and your points.</li>
-        <li>The game never ends: play as long as you want.</li>
-      </ul>
-    </div>
-    <div id="gameSetup" class="setup">
-      <label for="bet" id="betLabel">Puntata:</label>
-      <select id="bet">
-        <option value="0.1">€0.10</option>
-        <option value="0.2">€0.20</option>
-        <option value="0.5">€0.50</option>
-        <option value="1">€1</option>
-        <option value="2">€2</option>
-        <option value="5">€5</option>
-      </select>
-      <button id="startButton">🎮 Inizia la partita</button>
-      <div style="margin-top: 10px;">
-        <span id="pointsLabel">🏆 Punti:</span> <span id="scoreValue">0</span>
-      </div>
-    </div>
-    <div id="gameArea" class="hidden">
-      <p id="progressCounter">Tappa: 0</p>
-      <div id="progressPath" class="progress-path">
-        <div class="progress-step active"><div class="circle"></div><div class="multiplier-label">x1</div></div>
-        <div class="progress-step current"><div class="circle"></div><div class="multiplier-label">x1.2</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x1.5</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x2</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x3</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x5</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x8</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x12</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label jackpot">x100</div></div>
-        <div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x200</div></div>
-      </div>
-      <div id="scorePanel">
-        <div class="top-row">
-          <span id="correctLabel">✅ Corrette:</span> <span id="correctCount">0</span>
-          <span id="errorLabel">❌ Errori:</span> <span id="errorCount">0</span>
-        </div>
-         <div id="gainLabel" class="gain-label">+€0.00</div>
-      </div>
-      <div id="cardDisplay" style="display: flex; justify-content: center; gap: 20px; align-items: center;">
-        <div>
-          <p id="currentCardLabel">Carta attuale:</p>
-          <img id="currentCardImg" src="" alt="Carta attuale" />
-        </div>
-        <div>
-          <p id="drawnCardLabel">Carta pescata:</p>
-          <div class="card-container">
-            <img id="drawnCardImg" src="cards/card_back.png" alt="Carta coperta" />
-          </div>
-        </div>
-      </div>
-      <div id="shuffleAnimation" class="fullscreen-shuffle hidden">
-      </div>
-      <div id="challengeArea">
-        <p id="challengeText">Sfida in corso...</p>
-        <div id="challengeButtons"></div>
-      </div>
-    </div> 
-  </div> 
-  <div id="historyPanel" class="hidden">
-    <div class="history-backdrop" id="historyBackdrop"></div>
-    <div class="history-modal">
-      <div class="history-header">
-        <h3 id="historyTitle">Cronologia</h3>
-        <div class="history-actions">
-          <button id="historyClear" class="small-button">Svuota</button>
-          <button id="historyClose" class="small-button">Chiudi</button>
-        </div>
-      </div>
-      <div id="historyList" class="history-list"></div>
-    </div>
-  </div>
-  <script src="script.js"></script>
+<div class="container">
+<div class="top-controls"
+style="position: absolute; top: 10px; right: 10px; display: flex; flex-direction: row; align-items: center; gap: 12px; z-index: 1000;">
+<select id="languageSelect">
+<option value="it">🇮🇹 Italiano</option>
+<option value="en">🇬🇧 English</option>
+</select>
+<div style="display:flex; flex-direction: column; gap:6px;">
+<button id="historyButton" class="icon-button" title="Cronologia" aria-label="Cronologia">🕒</button>
+<div id="soundToggle" class="icon-button"
+style="width:40px; height:40px; display:flex; align-items:center;
+justify-content:center; font-size:24px; border-radius:50%;
+background:#333; color:#fff; cursor:pointer;">
+🔊
+</div>
+</div>
+</div>
+<h1 id="gameTitle">Deck Step - Demo</h1>
+<div id="rulesLabel" class="rules-toggle">📜 Regole</div>
+<div id="rulesPanel" class="hidden">
+<p><strong>ITA:</strong> Benvenuto nella <strong>demo</strong> di Deck Step!
+In questa versione puoi provare il livello <strong>Facile</strong> senza limiti di tempo o game over.</p>
+<ul>
+<li>Scegli la <strong>puntata iniziale</strong> (€0,10–€5).</li>
+<li>Ad ogni turno pesca una carta e affronta una sfida: <em>Maggiore/Minore</em>, <em>Pari/Dispari</em>, <em>Colore</em>.</li>
+<li>Ogni risposta corretta aumenta il moltiplicatore e i punti.</li>
+<li>Il gioco non termina: puoi continuare finché vuoi.</li>
+</ul>
+<hr>
+<p><strong>ENG:</strong> Welcome to the <strong>demo</strong> of Deck Step!
+In this version you can try the <strong>Easy</strong> level with no time limit or game over.</p>
+<ul>
+<li>Select your <strong>starting bet</strong> (€0.10–€5).</li>
+<li>Each turn you draw a card and face a challenge: <em>Higher/Lower</em>, <em>Even/Odd</em>, <em>Color</em>.</li>
+<li>Each correct answer increases the multiplier and your points.</li>
+<li>The game never ends: play as long as you want.</li>
+</ul>
+</div>
+<div id="gameSetup" class="setup">
+<label for="bet" id="betLabel">Puntata:</label>
+<select id="bet">
+<option value="0.1">€0.10</option>
+<option value="0.2">€0.20</option>
+<option value="0.5">€0.50</option>
+<option value="1">€1</option>
+<option value="2">€2</option>
+<option value="5">€5</option>
+</select>
+<button id="startButton">🎮 Inizia la partita</button>
+<div style="margin-top: 10px;">
+<span id="pointsLabel">🏆 Punti:</span> <span id="scoreValue">0</span>
+</div>
+</div>
+<div id="gameArea" class="hidden">
+<p id="progressCounter">Tappa: 0</p>
+<div id="progressPath" class="progress-path">
+<div class="progress-step active"><div class="circle"></div><div class="multiplier-label">x1</div></div>
+<div class="progress-step current"><div class="circle"></div><div class="multiplier-label">x1.2</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x1.5</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x2</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x3</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x5</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x8</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x12</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label jackpot">x100</div></div>
+<div class="progress-step future"><div class="circle"></div><div class="multiplier-label">x200</div></div>
+</div>
+<div id="scorePanel">
+<div class="top-row">
+<span id="correctLabel">✅ Corrette:</span> <span id="correctCount">0</span>
+<span id="errorLabel">❌ Errori:</span> <span id="errorCount">0</span>
+</div>
+<div id="gainLabel" class="gain-label">+€0.00</div>
+</div>
+<div id="cardDisplay" style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+<div>
+<p id="currentCardLabel">Carta attuale:</p>
+<img id="currentCardImg" src="" alt="Carta attuale" />
+</div>
+<div>
+<p id="drawnCardLabel">Carta pescata:</p>
+<div class="card-container">
+<img id="drawnCardImg" src="cards/card_back.png" alt="Carta coperta" />
+</div>
+</div>
+</div>
+<div id="shuffleAnimation" class="fullscreen-shuffle hidden">
+</div>
+<div id="challengeArea">
+<p id="challengeText">Sfida in corso...</p>
+<div id="challengeButtons"></div>
+</div>
+</div>
+</div>
+<div id="historyPanel" class="hidden">
+<div class="history-backdrop" id="historyBackdrop"></div>
+<div class="history-modal">
+<div class="history-header">
+<h3 id="historyTitle">Cronologia</h3>
+<div class="history-actions">
+<button id="historyClear" class="small-button">Svuota</button>
+<button id="historyClose" class="small-button">Chiudi</button>
+</div>
+</div>
+<div id="historyList" class="history-list"></div>
+</div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
