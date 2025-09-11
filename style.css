@@ -45,11 +45,41 @@ font-weight: bold;
 border: 2px solid gold;
 box-shadow: 0 0 8px gold;
 }
+.button-maggiore,
+.button-dentro,
+.button-pari {
+background-color: #ff0000 !important;
+color: white !important;
+}
+.button-minore,
+.button-fuori,
+.button-dispari {
+background-color: #14d928 !important;
+color: white !important;
+}
+body {
+background-size: cover;
+background-position: center;
+}
+.container {
+padding: 1rem;
+margin: 0.5rem;
+border-radius: 12px;
+box-shadow: 0 0 20px gold;
+}
+img {
+width: 140px;
+margin: 0.5rem 0;
+}
 #currentCardImg,
 #drawnCardImg {
 width: 100%;
 max-width: 40vw;
 height: auto;
+}
+#scoreValue {
+font-size: 1.5rem;
+margin: 1rem 0;
 }
 #correctCount,
 #errorCount {
@@ -57,6 +87,15 @@ font-size: 2.2rem;
 font-weight: bold;
 color: gold;
 text-shadow: 0 0 5px black, 0 0 8px gold;
+}
+button {
+background: linear-gradient(to bottom, #d4af37, #b8860b);
+color: #000;
+cursor: pointer;
+}
+button:hover {
+background: linear-gradient(to bottom, #ffd700, #daa520);
+box-shadow: 0 0 12px gold;
 }
 /* VERSIONE MOBILE */
 @media (max-width: 768px) {
