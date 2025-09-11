@@ -445,12 +445,15 @@ progressPath.appendChild(step);
 }
 
 function preloadCardImages() {
-for (let i = 1; i <= 40; i++) {
-const img = new Image();
-img.src = `cards/card_${i}.png`;
-}
-const back = new Image();
-back.src = "cards/card_back.png";
+  const suits = ['C','P','F','Q'];
+  for (let suit of suits) {
+    for (let value = 1; value <= 10; value++) {
+      const img = new Image();
+      img.src = `cards/${value}${suit}.png`;
+    }
+  }
+  const back = new Image();
+  back.src = "cards/card_back.png";
 }
 
 function startGame() {
@@ -468,29 +471,25 @@ generateChallenge();
 }
 
 function drawCard(avoidValue = null) {
-const suitsLetters = ['C', 'P', 'F', 'Q'];
-let index, value, suitLetter;
-do {
-index = Math.floor(Math.random() * 40) + 1;
-value = ((index - 1) % 10) + 1;
-const suitIndex = Math.floor((index - 1) / 10);
-suitLetter = suitsLetters[suitIndex];
-}
-while (value === avoidValue);
-return { value, suit: suitLetter };
+  const suitsLetters = ['C','P','F','Q'];
+  let value, suitLetter;
+  do {
+    value = Math.floor(Math.random() * 10) + 1; // 1-10
+    suitLetter = suitsLetters[Math.floor(Math.random() * 4)];
+  } while (value === avoidValue);
+  return { value, suit: suitLetter };
 }
 
 function displayCurrentCard(card) {
-currentCardImg.src = `cards/card_${card.value}${card.suit}.png`;
+  currentCardImg.src = `cards/${card.value}${card.suit}.png`;
 }
-
 function displayDrawnCard(card, covered = false) {
-const drawnCardImg = document.getElementById("drawnCardImg");
-if (covered || !card) {
-drawnCardImg.src = "cards/card_back.png";
-} else {
-drawnCardImg.src = `cards/card_${card.value}${card.suit}.png`;
-}
+  const drawnCardImg = document.getElementById("drawnCardImg");
+  if (covered || !card) {
+    drawnCardImg.src = "cards/card_back.png";
+  } else {
+    drawnCardImg.src = `cards/${card.value}${card.suit}.png`;
+  }
 }
 
 function isRed(suit) {
