@@ -19,7 +19,9 @@ const soundWrong = new Audio('wrong.mp3');
 const soundFlip = new Audio("flip.mp3");
 const soundMinigame = new Audio('minigame.mp3');
 const soundMultiplier = new Audio('multiplier.mp3');
-
+const backgroundMusic = new Audio('background.mp3');
+backgroundMusic.loop = true;
+backgroundMusic.volume = 0.5;
 let audioOn = localStorage.getItem("audioOn") !== "false";
 
 function unlockAudio() {
@@ -54,17 +56,21 @@ function playSound(sound) {
  }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const soundToggle = document.getElementById("soundToggle");
-  if (!soundToggle) return;
-  soundToggle.textContent = audioOn ? "🔊" : "🔇";
-  soundToggle.addEventListener("click", (event) => {
-    event.stopPropagation();
-    audioOn = !audioOn;
-    soundToggle.textContent = audioOn ? "🔊" : "🔇";
-    localStorage.setItem("audioOn", audioOn); 
-  });
+const soundToggle = document.getElementById("soundToggle");
+if (!soundToggle) return;
+soundToggle.textContent = audioOn ? "🔊" : "🔇";
+soundToggle.addEventListener("click", (event) => {
+event.stopPropagation();
+audioOn = !audioOn;
+soundToggle.textContent = audioOn ? "🔊" : "🔇";
+localStorage.setItem("audioOn", audioOn);
+if (!audioOn) {
+backgroundMusic.pause();
+} else {
+backgroundMusic.play().catch(() => {});
+}
 });
-
+});
 let gameAreaOriginalDisplay = null;
 let partitaIniziata = false;
 
@@ -371,6 +377,12 @@ startButton.addEventListener("click", () => {
   playSound(soundClick);
   const dummy = new Audio('click.mp3');
   dummy.play().catch(() => {});
+if (audioOn) {
+backgroundMusic.currentTime = 0;   // ricomincia dall'inizio se serve
+backgroundMusic.play()
+.then(() => console.log("Musica partita"))
+.catch(err => console.warn("Errore avvio musica:", err));
+}
   startHistorySession(); 
   aggiornaMoltiplicatori();
   preloadCardImages();
