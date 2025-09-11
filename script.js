@@ -79,7 +79,7 @@ function saveHistory(list) {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
 }
 function startHistorySession() {
-   playSound(soundClick);
+  playSound(soundClick);
   const list = loadHistory();
   activeSession = {
     id: Date.now(),
@@ -119,14 +119,36 @@ function initHistoryUI() {
   const closeBtn = document.getElementById('historyClose');
   const clearBtn = document.getElementById('historyClear');
   const backdrop = document.getElementById('historyBackdrop');
-  if (openBtn) openBtn.addEventListener('click', () => { panel.classList.remove('hidden'); renderHistory(); });
-  if (closeBtn) closeBtn.addEventListener('click', () => panel.classList.add('hidden'));
-  if (backdrop) backdrop.addEventListener('click', () => panel.classList.add('hidden'));
-  if (clearBtn) clearBtn.addEventListener('click', () => {
+  if (openBtn) {
+  openBtn.addEventListener('click', () => {
+    panel.classList.remove('hidden');
+    renderHistory();
+    playSound(soundClick);
+  });
+}
+if (closeBtn) {
+  closeBtn.addEventListener('click', () => {
+    panel.classList.add('hidden');
+    playSound(soundClick);
+  });
+}
+  if (backdrop) {
+  backdrop.addEventListener('click', () => {
+    panel.classList.add('hidden');
+    playSound(soundClick);
+  });
+}
+
+if (clearBtn) {
+  clearBtn.addEventListener('click', () => {
+    playSound(soundClick);
     if (confirm('Sicuro di cancellare la cronologia?')) {
       localStorage.removeItem(HISTORY_KEY);
       activeSession = null;
       renderHistory();
+    }
+  });
+}
     }
   });
 }
@@ -339,12 +361,14 @@ const selectBet = document.getElementById("bet");
 
 selectBet.addEventListener("change", () => {
   puntataIniziale = parseFloat(selectBet.value);
+  playSound(soundClick);
 });
 rulesToggle.addEventListener("click", () => {
   rulesPanel.classList.toggle("hidden");
 });
 
 startButton.addEventListener("click", () => {
+  playSound(soundClick);
   const dummy = new Audio('click.mp3');
   dummy.play().catch(() => {});
   startHistorySession(); 
@@ -364,6 +388,7 @@ startButton.addEventListener("click", () => {
 languageSelect.addEventListener("change", () => {
   currentLanguage = languageSelect.value;
   updateLanguage();
+  playSound(soundClick);
 });
 
 function updateScore() {
@@ -498,7 +523,6 @@ function addButton(text, checkFn) {
   btn.classList.add("green-button");
   btn.style.color = "white";
   btn.onclick = () => {
-    playSound(soundClick);
     const drawnCard = drawCard(currentCard.value);
     const cardName = `${drawnCard.value}${drawnCard.suit}`;
     logHistoryEvent(`Hai giocato la carta: ${cardName}`);
