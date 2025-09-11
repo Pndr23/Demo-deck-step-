@@ -156,8 +156,6 @@ if (clearBtn) {
   });
 }
     }
-  });
-}
 function renderHistory() {
   const listEl = document.getElementById('historyList');
   if (!listEl) return;
@@ -214,6 +212,7 @@ function updateBetBadge() {
         badge.textContent = `Puntata: €${puntataIniziale.toFixed(2)}`;
     }
 }
+  
 document.getElementById("startButton").addEventListener("click", () => {
 createBetBadge(); 
 });
