@@ -33,12 +33,30 @@ body {
   box-shadow: 0 0 40px gold;
   overflow: visible;
 }
-#demoCurrentCard,
-#demoDrawnCard {
-width: 200px;   /* come nel gioco completo */
+.gain-label {
+display: inline-block;
+background-color: rgba(0, 0, 0, 0.85);
+color: #FFD700;
+font-size: 2rem;
+margin-left: 10px;
+padding: 6px 12px;
+border-radius: 10px;
+font-weight: bold;
+border: 2px solid gold;
+box-shadow: 0 0 8px gold;
+}
+#currentCardImg,
+#drawnCardImg {
+width: 100%;
+max-width: 40vw;
 height: auto;
-display: block;
-margin: 0 auto;
+}
+#correctCount,
+#errorCount {
+font-size: 2.2rem;
+font-weight: bold;
+color: gold;
+text-shadow: 0 0 5px black, 0 0 8px gold;
 }
 /* VERSIONE MOBILE */
 @media (max-width: 768px) {
