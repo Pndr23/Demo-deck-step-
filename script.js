@@ -443,17 +443,16 @@ step.appendChild(multiplier);
 progressPath.appendChild(step);
 }
 }
-
 function preloadCardImages() {
-  const suits = ['C','P','F','Q'];
-  for (let suit of suits) {
-    for (let value = 1; value <= 10; value++) {
-      const img = new Image();
-      img.src = `cards/${value}${suit}.png`;
-    }
-  }
-  const back = new Image();
-  back.src = "cards/card_back.png";
+const suits = ['C', 'P', 'F', 'Q'];
+for (let suit of suits) {
+for (let value = 1; value <= 10; value++) {
+const img = new Image();
+img.src = `cards/card_${value}${suit}.png`;
+}
+}
+const back = new Image();
+back.src = "cards/card_back.png";
 }
 
 function startGame() {
@@ -469,37 +468,33 @@ displayCurrentCard(currentCard);
 displayDrawnCard(null, true);
 generateChallenge();
 }
-
 function drawCard(avoidValue = null) {
-  const suitsLetters = ['C','P','F','Q'];
-  let value, suitLetter;
-  do {
-    value = Math.floor(Math.random() * 10) + 1; // 1-10
-    suitLetter = suitsLetters[Math.floor(Math.random() * 4)];
-  } while (value === avoidValue);
-  return { value, suit: suitLetter };
+const suitsLetters = ['C','P','F','Q'];
+let value, suitLetter;
+do {
+value = Math.floor(Math.random() * 10) + 1; // valori 1-10
+suitLetter = suitsLetters[Math.floor(Math.random() * 4)];
+} while (value === avoidValue);
+return { value, suit: suitLetter };
 }
 
 function displayCurrentCard(card) {
-  currentCardImg.src = `cards/${card.value}${card.suit}.png`;
+currentCardImg.src = `cards/card_${card.value}${card.suit}.png`;
 }
 function displayDrawnCard(card, covered = false) {
-  const drawnCardImg = document.getElementById("drawnCardImg");
-  if (covered || !card) {
-    drawnCardImg.src = "cards/card_back.png";
-  } else {
-    drawnCardImg.src = `cards/${card.value}${card.suit}.png`;
-  }
+const drawnCardImg = document.getElementById("drawnCardImg");
+if (covered || !card) {
+drawnCardImg.src = "cards/card_back.png";
+} else {
+drawnCardImg.src = `cards/card_${card.value}${card.suit}.png`;
 }
-
+}
 function isRed(suit) {
 return suit === "C" || suit === "Q";
 }
-
 function isBlack(suit) {
 return suit === "F" || suit === "P";
 }
-
 function generateChallenge() {
 displayDrawnCard(null, true);
 let challenges = [
@@ -507,7 +502,6 @@ let challenges = [
 { key: "evenOdd", label: { it: "Pari o Dispari", en: "Even or Odd" } },
 { key: "color", label: { it: "Colore", en: "Color" } },
 ];
-
 // livello unico = easy, niente filtri
 const selected = challenges[Math.floor(Math.random() * challenges.length)];
 const label = selected.label[currentLanguage];
