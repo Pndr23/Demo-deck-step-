@@ -74,8 +74,10 @@ margin: 0.5rem 0;
 #currentCardImg,
 #drawnCardImg {
 width: 100%;
-max-width: 40vw;
-height: auto;
+max-width: 40vw; /* entrambe le carte avranno la stessa larghezza massima */
+height: auto;    
+border-radius: 12px; /* opzionale, se vuoi angoli arrotondati */
+box-shadow: 0 0 15px gold; 
 }
 #scoreValue {
 font-size: 1.5rem;
