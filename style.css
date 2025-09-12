@@ -144,12 +144,6 @@ background-color: #14d928 !important;
 color: white !important;
 }
 
-img {
-width: 400px;
-height: auto;
-margin-top: 0.5rem;
-}
-
 #rulesLabel {
 font-size: 1.5rem;
 cursor: pointer;
