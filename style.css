@@ -77,10 +77,6 @@ margin-bottom: 2rem;
 text-decoration: underline;
 color: white;
 }
-#scoreValue {
-font-size: 1.5rem;
-margin: 1rem 0;
-}
 #correctLabel,
 #errorLabel {
 font-size: 2rem;
@@ -94,6 +90,9 @@ font-weight: bold;
 color: gold;
 text-shadow: 0 0 5px black, 0 0 8px gold;
 margin-top: 1rem;
+}
+#challengeText {
+display: none !important;
 }
 #toggle-regolamento {
 position: fixed;
