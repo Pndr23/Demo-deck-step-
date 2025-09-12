@@ -1,4 +1,4 @@
-/* BODY E CONTAINER */
+/* BODY */
 body {
   margin: 0;
   min-height: 100vh;
@@ -10,6 +10,7 @@ body {
   background-position: center;
 }
 
+/* CONTAINER */
 .container {
   text-align: center;
   background: url(sfondo.jpg.jpg);
@@ -23,7 +24,7 @@ body {
   overflow: visible;
 }
 
-/* LABEL DI GUADAGNO */
+/* LABEL */
 .gain-label {
   display: inline-block;
   background-color: rgba(0, 0, 0, 0.85);
@@ -53,6 +54,14 @@ body {
 }
 
 button {
+  margin: 10px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
   background: linear-gradient(to bottom, #d4af37, #b8860b);
   color: #000;
   cursor: pointer;
@@ -76,15 +85,10 @@ button:hover {
 #currentCardImg,
 #drawnCardImg {
   width: 100%;
-  max-width: 180px;
+  max-width: 180px; /* Desktop */
   height: auto;
   border-radius: 12px;
   box-shadow: 0 0 15px gold;
-}
-
-/* NASCONDI SFIDA IN CORSO */
-#challengeText {
-  display: none;
 }
 
 /* SCORE */
@@ -101,7 +105,7 @@ button:hover {
   text-shadow: 0 0 5px black, 0 0 8px gold;
 }
 
-/* PULSANTE ANIMATO */
+/* ANIMAZIONI */
 .pulse {
   animation: pulseAnimation 1.5s infinite;
   font-size: 2.5em;
@@ -116,9 +120,29 @@ button:hover {
   50% { transform: scale(1.1); opacity: 0.7; }
 }
 
-/* ALTRI ELEMENTI */
-#rulesLabel { font-size: 1.5rem; cursor: pointer; margin-bottom: 2rem; text-decoration: underline; color: white; }
-#gameTitle { font-size: 3.2rem; text-transform: uppercase; font-weight: bold; color: gold; text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px #ffcc00; }
+#useJollyBtn {
+  background-color: gold;
+  color: black;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: 2px solid darkgoldenrod;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  animation: pulseJolly 1.5s infinite;
+  box-shadow: 0 0 10px gold;
+}
+
+@keyframes pulseJolly {
+  0% { transform: scale(1); box-shadow: 0 0 10px gold; }
+  50% { transform: scale(1.1); box-shadow: 0 0 20px gold; }
+  100% { transform: scale(1); box-shadow: 0 0 10px gold; }
+}
+
+/* NASCONDI SFIDA IN CORSO */
+#challengeText {
+  display: none;
+}
 
 /* MINIGIOCO JOLLY */
 #minigiocoJolly {
@@ -139,8 +163,23 @@ button:hover {
   flex-direction: column;
 }
 
-#minigiocoJolly h2 { font-size: 8rem; color: gold; font-weight: 800; text-shadow: 0 0 10px gold; margin-bottom: 25px; text-align: center; }
-#minigiocoJolly div.carte { display: flex; gap: 40px; justify-content: center; align-items: center; flex-grow: 1; width: 100%; }
+#minigiocoJolly h2 {
+  font-size: 8rem;
+  color: gold;
+  font-weight: 800;
+  text-shadow: 0 0 10px gold;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+#minigiocoJolly div.carte {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+}
 
 #minigiocoJolly img {
   width: 180px;
@@ -154,16 +193,34 @@ button:hover {
   backface-visibility: hidden;
 }
 
-#minigiocoJolly img.covered { animation: glowPulse 2.5s infinite; filter: drop-shadow(0 0 6px gold); }
-#minigiocoJolly img.flipped { transform: rotateY(180deg); box-shadow: 0 0 20px 8px gold; filter: drop-shadow(0 0 10px gold); }
-#minigiocoJolly img.selected { box-shadow: 0 0 30px 10px gold !important; filter: drop-shadow(0 0 20px gold) !important; transform: scale(1.1); transition: all 0.3s ease; }
+#minigiocoJolly img.covered {
+  animation: glowPulse 2.5s infinite;
+  filter: drop-shadow(0 0 6px gold);
+}
 
-@keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 3px gold); } 50% { filter: drop-shadow(0 0 12px gold); } }
+#minigiocoJolly img.flipped {
+  transform: rotateY(180deg);
+  box-shadow: 0 0 20px 8px gold;
+  filter: drop-shadow(0 0 10px gold);
+}
+
+#minigiocoJolly img.selected {
+  box-shadow: 0 0 30px 10px gold !important;
+  filter: drop-shadow(0 0 20px gold) !important;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+@keyframes glowPulse {
+  0%, 100% { filter: drop-shadow(0 0 3px gold); }
+  50% { filter: drop-shadow(0 0 12px gold); }
+}
 
 /* MEDIA QUERIES */
 @media (max-width: 768px) {
   #currentCardImg,
-  #drawnCardImg { width: 100%; max-width: 120px; }
+  #drawnCardImg { max-width: 120px; }
+
   #minigiocoJolly h2 { font-size: 3rem; margin-bottom: 15px; }
   #minigiocoJolly { align-items: flex-start; padding-top: 30px; }
   #minigiocoJolly div.carte { gap: 15px; }
