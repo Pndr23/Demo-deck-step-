@@ -403,9 +403,10 @@ playSound(soundClick);
 });
 
 function updateScore() {
-document.getElementById("scoreValue").innerText = correctCount;
-correctCountSpan.textContent = correctCount;
-errorCountSpan.textContent = errorCount;
+  const scoreEl = document.getElementById("scoreValue");
+  if (scoreEl) scoreEl.innerText = correctCount; // aggiorna solo se esiste
+  correctCountSpan.textContent = correctCount;
+  errorCountSpan.textContent = errorCount;
 }
 
 function updateProgress() {
