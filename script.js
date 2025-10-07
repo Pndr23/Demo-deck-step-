@@ -594,19 +594,37 @@ label.textContent = "+€" + guadagno.toFixed(2);
 
 function updateLanguage() {
 document.querySelector("html").lang = currentLanguage;
-document.getElementById("gameTitle").textContent = translate("title");
-document.getElementById("startButton").textContent = translate("start");
-document.getElementById("rulesLabel").textContent = translate("rules");
-document.getElementById("currentCardLabel").textContent = translate("currentCard");
-document.getElementById("betLabel").textContent = translate("bet");
-document.getElementById("pointsLabel").textContent = translate("points");
-document.getElementById("correctLabel").textContent = "✅ " + translate("correct");
-document.getElementById("errorLabel").textContent = "❌ " + translate("error");
+const gameTitle = document.getElementById("gameTitle");
+if (gameTitle) gameTitle.textContent = translate("title");
+const startButton = document.getElementById("startButton");
+if (startButton) startButton.textContent = translate("start");
+const rulesLabel = document.getElementById("rulesLabel");
+if (rulesLabel) rulesLabel.textContent = translate("rules");
+const currentCardLabel = document.getElementById("currentCardLabel");
+if (currentCardLabel) currentCardLabel.textContent = translate("currentCard");
+const betLabel = document.getElementById("betLabel");
+if (betLabel) betLabel.textContent = translate("bet");
+const pointsLabel = document.getElementById("pointsLabel");
+if (pointsLabel) pointsLabel.textContent = translate("points");
+const correctLabel = document.getElementById("correctLabel");
+if (correctLabel) correctLabel.textContent = "✅ " + translate("correct");
+const errorLabel = document.getElementById("errorLabel");
+if (errorLabel) errorLabel.textContent = "❌ " + translate("error");
+const jollyLabel = document.getElementById("jollyLabel");
+if (jollyLabel) jollyLabel.textContent = "🃏 " + translate("jolly");
+if (useJollyBtn) useJollyBtn.textContent = "🃏 " + translate("useJolly");
 updateProgress();
-rulesPanel.innerHTML = translate("rulesText");
-document.getElementById("withdrawLabel").textContent = translate("withdraw");
+if (rulesPanel) rulesPanel.innerHTML = translate("rulesText");
+const withdrawLabel = document.getElementById("withdrawLabel");
+if (withdrawLabel) withdrawLabel.textContent = translate("withdraw");
+const drawnCardLabel = document.getElementById("drawnCardLabel");
+if (drawnCardLabel) drawnCardLabel.textContent = translate("drawnCard");
+const betBadge = document.getElementById("betBadge");
+if (betBadge) {
+const betValue = parseFloat(document.getElementById("bet").value).toFixed(2);
+betBadge.textContent = `${translate("bet")} €${betValue}`;
 }
-
+}
 function translate(key) {
 const t = {
 it: {
