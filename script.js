@@ -521,7 +521,12 @@ addButton(translate("red"), (next) => isRed(next.suit));
 addButton(translate("black"), (next) => isBlack(next.suit));
 }
 }
-
+document.addEventListener("DOMContentLoaded", () => {
+currentLanguage = navigator.language.startsWith("en") ? "en" : "it";
+languageSelect.value = currentLanguage;
+currentLevel = document.getElementById("risk").value;
+updateLanguage();
+});
 function addButton(text, checkFn) {
 const btn = document.createElement("button");
 btn.textContent = text;
