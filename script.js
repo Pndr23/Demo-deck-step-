@@ -318,7 +318,7 @@ el.src = el.dataset.img;
 el.classList.add("selected");
 updateJollyDisplay();
 updateScore();
-} 
+});
 el.dataset.type === "moltiplicatore") {
 playSound(soundMultiplier);
 showMinigiocoMessage(`Moltiplicatore x${el.dataset.value}!`);
